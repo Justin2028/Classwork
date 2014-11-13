@@ -1,52 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.govschool;
 
 import javafx.application.*;
-import javafx.stage.*;
 import javafx.scene.*;
-import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.event.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
-/**
- *
- * @author Glaedwyn
- */
-public class AddSubtract extends Application {
 
+
+public class AddSubtract extends Application
+{
     private static Button btnAdd;
     private static Button btnSubtract;
     private static Label lbl;
     private static int counter = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)
+    {
         // Create the add button
         btnAdd = new Button();
         btnAdd.setText("Add");
         // setOnAction() expects an object that implements EventHandler<T>
-        // As it turns out, we do! This object's handle() method will be 
-        // called
-        btnAdd.setOnAction((ActionEvent e) -> {
-            counter++;
-            lbl.setText(Integer.toString(counter));
-        });
+        // So, let's use a lambda!
+        btnAdd.setOnAction(e -> btnAddClick());
 
         // Create the subtract button
         btnSubtract = new Button();
         btnSubtract.setText("Subtract");
-        btnSubtract.setOnAction((ActionEvent e) -> {
-            counter--;
-            lbl.setText(Integer.toString(counter));
-        });
+        btnSubtract.setOnAction(e -> btnSubtractClick());
 
         // Create the label
         lbl = new Label();
@@ -67,7 +54,19 @@ public class AddSubtract extends Application {
 
         // Add the stage to the scene and show the window
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Add/Subtract");
+        primaryStage.setTitle("Add/Sub");
         primaryStage.show();
+    }
+
+    private void btnAddClick()
+    {
+        counter++;
+        lbl.setText(Integer.toString(counter));
+    }
+
+    private void btnSubtractClick()
+    {
+        counter--;
+        lbl.setText(Integer.toString(counter));
     }
 }
