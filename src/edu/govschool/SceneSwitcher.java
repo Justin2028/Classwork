@@ -1,5 +1,7 @@
 package edu.govschool;
 
+import edu.govschool.modals.ConfirmationBox;
+import edu.govschool.modals.MessageBox;
 import javafx.application.*;
 import javafx.event.*;
 import javafx.scene.*;
@@ -91,7 +93,11 @@ public class SceneSwitcher extends Application
 
     private void btnSwitch2_Click()
     {
-        stage.setScene(scene2);
+        //stage.setScene(scene2);
+        //MessageBox.show("You Clicked a button!", "Message Box");
+        boolean test = ConfirmationBox.show("Test Message", "Choose!", "OK", "Cancel");
+        if(test)MessageBox.show("You Clicked OK!", "Confirmed");
+        else{MessageBox.show("You clicked cancel...", "Denied!");}
     }
 
     // AddSubtract event handlers

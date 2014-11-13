@@ -59,9 +59,9 @@ public class ConfirmationBox {
         HBox buttonsPane = new HBox(20);
         buttonsPane.getChildren().addAll(confirmBtn, denyBtn);
         
-        VBox pane = new VBox(20);
-        pane.getChildren().addAll(lbl, buttonsPane);
-        pane.setAlignment(Pos.CENTER);
+        BorderPane pane = new BorderPane();
+        pane.setCenter(lbl);
+        pane.setBottom(buttonsPane);
         
         // Let's set the scene!
         Scene scene = new Scene(pane);
