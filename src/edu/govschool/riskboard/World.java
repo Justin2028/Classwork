@@ -1,0 +1,275 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package edu.govschool.riskboard;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+/**
+ *
+ * @author Glaedwyn
+ */
+public class World {
+    Country[] world = new Country[42];
+    Country Alaska = new Country("Alaska");
+    Country Alberta = new Country("Alberta");
+    Country CentralAmerica = new Country("Central America");
+    Country EastUS = new Country("Eastern United States");
+    Country Greenland = new Country("Greenland");
+    Country NWTerritory = new Country("Northwest Territory");
+    Country Ontario = new Country("Ontario");
+    Country Quebec = new Country("Quebec");
+    Country WestUS = new Country("Western United States");
+    Country Argentina = new Country("Argentina");
+    Country Brazil = new Country("Brazil");
+    Country Peru = new Country("Peru");
+    Country Venezuela = new Country("Venezuela");
+    Country England = new Country("Great Britain");
+    Country Iceland = new Country("Iceland");
+    Country NEurope = new Country("Northern Europe");
+    Country Scandinavia = new Country("Scandinavia");
+    Country SEurope = new Country("Southern Europe");
+    Country Russia = new Country("Russia");
+    Country WEurope = new Country("Western Europe");
+    Country Congo = new Country("Congo");
+    Country EAfrica = new Country("East Africa");
+    Country Egypt = new Country("Egypt");
+    Country Madagascar = new Country("Madagascar");
+    Country NAfrica = new Country("North Africa");
+    Country SAfrica = new Country("South Africa");
+    Country Afghanistan = new Country("Afghanistan");
+    Country China = new Country("China");
+    Country India = new Country("India");
+    Country Irktusk = new Country("Irktusk");
+    Country Japan = new Country("Japan");
+    Country Kamchatka = new Country("Kamchatka");
+    Country MiddleEast = new Country("Middle East");
+    Country Mongolia = new Country("Mongolia");
+    Country Siam = new Country("Siam");
+    Country Siberia = new Country("Siberia");
+    Country Ural = new Country("Ural");
+    Country Yakutsk = new Country("Yakutsk");
+    Country EAustralia = new Country("Eastern Australia");
+    Country Indonesia = new Country("Indonesia");
+    Country NewGuinea = new Country("New Guinea");
+    Country WAustralia = new Country("Western Australia");
+
+    public World() {
+        world[0] = (Alaska);
+        world[1] = (Alberta);
+        world[2] = (CentralAmerica);
+        world[3] = (EastUS);
+        world[4] = (Greenland);
+        world[5] = (NWTerritory);
+        world[6] = (Ontario);
+        world[7] = (Quebec);
+        world[8] = (WestUS);
+        world[9] = (Argentina);
+        world[10] = (Brazil);
+        world[11] = (Peru);
+        world[12] = (Venezuela);
+        world[13] = (England);
+        world[14] = (Iceland);
+        world[15] = (NEurope);
+        world[16] = (Scandinavia);
+        world[17] = (SEurope);
+        world[18] = (Russia);
+        world[19] = (WEurope);
+        world[20] = (Congo);
+        world[21] = (EAfrica);
+        world[22] = (Egypt);
+        world[23] = (Madagascar);
+        world[24] = (NAfrica);
+        world[25] = (SAfrica);
+        world[26] = (Afghanistan);
+        world[27] = (China);
+        world[28] = (India);
+        world[29] = (Irktusk);
+        world[30] = (Japan);
+        world[31] = (Kamchatka);
+        world[32] = (MiddleEast);
+        world[33] = (Mongolia);
+        world[34] = (Siam);
+        world[35] = (Siberia);
+        world[36] = (Ural);
+        world[37] = (Yakutsk);
+        world[38] = (EAustralia);
+        world[39] = (Indonesia);
+        world[40] = (NewGuinea);
+        world[41] = (WAustralia);
+        Alaska.borders.add(Kamchatka);
+        Alaska.borders.add(NWTerritory);
+        Alaska.borders.add(Alberta);
+        Alberta.borders.add(Alaska);
+        Alberta.borders.add(NWTerritory);
+        Alberta.borders.add(Ontario);
+        Alberta.borders.add(WestUS);
+        CentralAmerica.borders.add(Venezuela);
+        CentralAmerica.borders.add(WestUS);
+        EastUS.borders.add(Ontario);
+        EastUS.borders.add(Quebec);
+        Greenland.borders.add(Iceland);
+        Greenland.borders.add(NWTerritory);
+        Greenland.borders.add(Ontario);
+        Greenland.borders.add(Quebec);
+        NWTerritory.borders.add(Alaska);
+        NWTerritory.borders.add(Alberta);
+        NWTerritory.borders.add(Ontario);
+        NWTerritory.borders.add(Greenland);
+        Ontario.borders.add(Quebec);
+        Ontario.borders.add(Greenland);
+        Ontario.borders.add(Alberta);
+        Ontario.borders.add(NWTerritory);
+        Ontario.borders.add(WestUS);
+        Ontario.borders.add(EastUS);
+        Quebec.borders.add(Greenland);
+        Quebec.borders.add(Ontario);
+        Quebec.borders.add(EastUS);
+        WestUS.borders.add(Alberta);
+        WestUS.borders.add(Ontario);
+        WestUS.borders.add(EastUS);
+        WestUS.borders.add(CentralAmerica);
+        Argentina.borders.add(Brazil);
+        Argentina.borders.add(Peru);
+        Brazil.borders.add(Peru);
+        Brazil.borders.add(Venezuela);
+        Brazil.borders.add(NAfrica);
+        Brazil.borders.add(Argentina);
+        Peru.borders.add(Argentina);
+        Peru.borders.add(Brazil);
+        Peru.borders.add(Venezuela);
+        Venezuela.borders.add(Peru);
+        Venezuela.borders.add(CentralAmerica);
+        Venezuela.borders.add(Brazil);
+        England.borders.add(Iceland);
+        England.borders.add(Scandinavia);
+        England.borders.add(WEurope);
+        England.borders.add(NEurope);
+        Iceland.borders.add(England);
+        Iceland.borders.add(Greenland);
+        Iceland.borders.add(Scandinavia);
+        NEurope.borders.add(WEurope);
+        NEurope.borders.add(England);
+        NEurope.borders.add(SEurope);
+        NEurope.borders.add(Russia);
+        NEurope.borders.add(Scandinavia);
+        Scandinavia.borders.add(Iceland);
+        Scandinavia.borders.add(England);
+        Scandinavia.borders.add(Russia);
+        Scandinavia.borders.add(NEurope);
+        SEurope.borders.add(WEurope);
+        SEurope.borders.add(NAfrica);
+        SEurope.borders.add(MiddleEast);
+        SEurope.borders.add(Russia);
+        Russia.borders.add(Scandinavia);
+        Russia.borders.add(NEurope);
+        Russia.borders.add(SEurope);
+        Russia.borders.add(Ural);
+        Russia.borders.add(MiddleEast);
+        Russia.borders.add(Afghanistan);
+        WEurope.borders.add(England);
+        WEurope.borders.add(NEurope);
+        WEurope.borders.add(SEurope);
+        WEurope.borders.add(NAfrica);
+        Congo.borders.add(NAfrica);
+        Congo.borders.add(EAfrica);
+        Congo.borders.add(SAfrica);
+        EAfrica.borders.add(Egypt);
+        EAfrica.borders.add(NAfrica);
+        EAfrica.borders.add(Congo);
+        EAfrica.borders.add(SAfrica);
+        EAfrica.borders.add(Madagascar);
+        Egypt.borders.add(MiddleEast);
+        Egypt.borders.add(NAfrica);
+        Egypt.borders.add(EAfrica);
+        Egypt.borders.add(SEurope);
+        Egypt.borders.add(MiddleEast);
+        Madagascar.borders.add(EAfrica);
+        Madagascar.borders.add(SAfrica);
+        NAfrica.borders.add(WEurope);
+        NAfrica.borders.add(Egypt);
+        NAfrica.borders.add(SEurope);
+        NAfrica.borders.add(Congo);
+        NAfrica.borders.add(EAfrica);
+        NAfrica.borders.add(Brazil);
+        SAfrica.borders.add(Madagascar);
+        SAfrica.borders.add(Congo);
+        SAfrica.borders.add(EAfrica);
+        Afghanistan.borders.add(Russia);
+        Afghanistan.borders.add(Ural);
+        Afghanistan.borders.add(China);
+        Afghanistan.borders.add(India);
+        Afghanistan.borders.add(MiddleEast);
+        China.borders.add(Mongolia);
+        China.borders.add(Siam);
+        China.borders.add(India);
+        China.borders.add(Afghanistan);
+        China.borders.add(Ural);
+        China.borders.add(Siberia);
+        India.borders.add(Siam);
+        India.borders.add(China);
+        India.borders.add(Afghanistan);
+        India.borders.add(MiddleEast);
+        Irktusk.borders.add(Kamchatka);
+        Irktusk.borders.add(Siberia);
+        Irktusk.borders.add(Yakutsk);
+        Irktusk.borders.add(Mongolia);
+        Japan.borders.add(Kamchatka);
+        Japan.borders.add(Mongolia);
+        Kamchatka.borders.add(Yakutsk);
+        Kamchatka.borders.add(Irktusk);
+        Kamchatka.borders.add(Mongolia);
+        Kamchatka.borders.add(Japan);
+        MiddleEast.borders.add(SEurope);
+        MiddleEast.borders.add(Russia);
+        MiddleEast.borders.add(Afghanistan);
+        MiddleEast.borders.add(India);
+        MiddleEast.borders.add(Egypt);
+        MiddleEast.borders.add(EAfrica);
+        Mongolia.borders.add(China);
+        Mongolia.borders.add(Irktusk);
+        Mongolia.borders.add(Siberia);
+        Mongolia.borders.add(Kamchatka);
+        Mongolia.borders.add(Japan);
+        Siam.borders.add(India);
+        Siam.borders.add(China);
+        Siam.borders.add(Indonesia);
+        Siberia.borders.add(Ural);
+        Siberia.borders.add(Yakutsk);
+        Siberia.borders.add(Irktusk);
+        Siberia.borders.add(China);
+        Siberia.borders.add(Mongolia);
+        Ural.borders.add(Siberia);
+        Ural.borders.add(Afghanistan);
+        Ural.borders.add(China);
+        Ural.borders.add(Russia);
+        Yakutsk.borders.add(Kamchatka);
+        Yakutsk.borders.add(Irktusk);
+        Yakutsk.borders.add(Siberia);
+        EAustralia.borders.add(WAustralia);
+        EAustralia.borders.add(NewGuinea);
+        Indonesia.borders.add(NewGuinea);
+        Indonesia.borders.add(Siam);
+        Indonesia.borders.add(WAustralia);
+        NewGuinea.borders.add(EAustralia);
+        NewGuinea.borders.add(Indonesia);
+        WAustralia.borders.add(Indonesia);
+        WAustralia.borders.add(EAustralia);
+    }
+    
+    public Country getCountry(String name)
+    {
+        for(int i = 0; i < world.length; i++)
+        {
+            if(world[i].name.equals(name))
+            {
+                return world[i];
+            }
+        }
+        return null;
+    }
+}
