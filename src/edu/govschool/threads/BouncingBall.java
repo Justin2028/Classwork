@@ -13,12 +13,12 @@ import javax.swing.*;
  * <code>Timer</code>.
  * @author Mr. Davis
  */
-public class ThreadsExample extends JApplet
+public class BouncingBall extends JApplet
 {
     private static BufferedImage image;
     
     private static final int SIZE = 600;
-    private static final int MULT = 12;
+    private static final int MULT = 1;
     
     @Override
     public void init()
@@ -37,9 +37,7 @@ public class ThreadsExample extends JApplet
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
         
         // Here, we start our five projectiles as threads
-        for (int i = 0; i < 5; i++) {
-            threads.execute(new ProjectileThread(15.0, 15.0 * (i+1)));
-        }
+        threads.execute(new BallThread());
         
         // After all of the threads are finished, shutdown the thread pool
         threads.shutdown();
@@ -56,16 +54,18 @@ public class ThreadsExample extends JApplet
     // code we want to run on different threads. In this case, we want to 
     // update the projectile's location as it travels and redraw it to the
     // screen
-    private class ProjectileThread extends Projectile implements Runnable
+    private class BallThread implements Runnable
     {
         private double time;
         private int xCoord = 0;
+        private int xMult = 1;
+        private int yMult = 1;
         private int yCoord = (SIZE - 20);
         
-        public ProjectileThread(double initVelo, double theta)
+        public BallThread()
         {
-            super(initVelo, theta);
-            this.time = 0;
+            xCoord = 00;
+            yCoord = SIZE - 20;
         }
         
         // The 'run()' method contains all of the code we want to run
@@ -78,16 +78,23 @@ public class ThreadsExample extends JApplet
                 Graphics g = image.getGraphics();
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillOval(xCoord, yCoord, 10, 10);
-
+                g.fillOval(xCoord-((SIZE-yCoord)/60), SIZE-20, 2*((SIZE-yCoord)/60), 5);
                 g.setColor(Color.RED);
-                xCoord = this.getX(this.time) * MULT;
-                yCoord = (SIZE - 20) - (this.getY(this.time) * MULT);
+                xCoord = this.xCoord + 2 * MULT * xMult;
+                if(xCoord > SIZE - 10 || xCoord < 0)
+                {
+                    xMult *= -1;
+                }
+                yCoord = this.yCoord - (MULT * yMult);
+                if(yCoord > SIZE - 10 || yCoord < 0)
+                {
+                    yMult *= -1;
+                }
                 g.fillOval(xCoord, yCoord, 10, 10);
-
-                this.time += 0.25;
-
+                g.setColor(Color.BLACK);
+                g.fillOval(xCoord, SIZE-20, 2*((SIZE-yCoord)/60), 5);
                 try {
-                    Thread.sleep(1075);
+                    Thread.sleep(75);
                 } catch (InterruptedException e) {}
                 
                 repaint();
