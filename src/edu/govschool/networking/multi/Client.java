@@ -1,10 +1,9 @@
 package edu.govschool.networking.multi;
 
 import java.awt.BorderLayout;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,9 +12,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+
+
 /**
- * Class to represent a chat client. The client has a GUI window to chat with.
- * @author Mr. Davis
+ *
+ * @author bryce
  */
 public class Client extends JFrame implements Runnable
 {
@@ -24,26 +25,21 @@ public class Client extends JFrame implements Runnable
     // The socket representing the connection to the server
     private Socket socket;
     // I/O representations
-    private BufferedReader input;
-    private PrintWriter output;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
     // Thread to handle the GUI
-    private final Thread thread;
+    private Thread thread;
     // GUI elements
     private JTextField entryField;
     private JTextArea displayArea;
-    // Unique ID
-    private String ID;
+    // Username
+    private String username;
     // Message count
     private int count = 0;
     // Hostname/IP of the server
     private String serverHost;
     
-    /**
-     * Constructor for our client. This will take care of setting up the GUI and
-     * passing it to the thread property we have to deal with it.
-     * @param host the chat server host
-     */
-    public Client(String host) 
+    public Client()
     {
         // Create a simple JFrame with the title "Client"
         super("Client");
@@ -55,43 +51,65 @@ public class Client extends JFrame implements Runnable
             sendData(entryField.getText());
             entryField.setText("");
         });
-        add(entryField, BorderLayout.NORTH);
+        add(entryField, BorderLayout.SOUTH);
         
         // Setup the display area
-        displayArea = new JTextArea();
+        displayArea = new JTextArea(100, 40);
         displayArea.setEditable(false);
-        add(new JScrollPane(displayArea));
+        add(new JScrollPane(displayArea), BorderLayout.NORTH);
         
         // Save our server host location
-        serverHost = host;
+        this.serverHost = getServerHost();
         
-        ID = getUserName();
-        
-        // Attempt to connect to the server and setup the I/O streams
+        // Attempt to connect to the server
         try {
             socket = new Socket(serverHost, PORT);
+        } catch (IOException e) {
+            printErr("Error connection to server.");
+        }
+        
+        // Attempt the setup the I/O streams
+        try {
             getStreams();
-        } catch (IOException e) {}
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        } catch (IOException e) {
+            printErr("Error getting streams.");
+        }
+        
+        // Attempt to send the username over the output stream
+        try {
+            // Get a username
+            this.username = getUsername();
+            ChatResponse name = new ChatResponse(ChatResponse.TYPE_USERNAME,
+                                                 this.username);
+            output.writeObject(name);
+            output.flush();
+        } catch (IOException e) {
+            printErr("Error sending username to server.");
+        }
+        
         // Finalize the GUI and pass it to a background thread
         setSize(500, 500);
         setVisible(true);
-        thread = new Thread(this);
-        thread.start();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     /**
-     * Setup our I/O streams via the socket connection.
-     * @throws IOException the streams could not be created
+     * Displays a dialog box prompting for the server's hostname/IP
+     * @return 
      */
-    private void getStreams() throws IOException
+    private String getServerHost()
     {
-        input = new BufferedReader(
-                                new InputStreamReader(socket.getInputStream()));
-        output = new PrintWriter(socket.getOutputStream(), true);
+        return JOptionPane.showInputDialog(this, 
+                                           "Enter the server hostname/IP", 
+                                           "Server host", 
+                                           JOptionPane.QUESTION_MESSAGE);
     }
     
-    private String getUserName()
+    /**
+     * Displays a dialog box prompting for a username.
+     * @return the chosen username
+     */
+    private String getUsername()
     {
         return JOptionPane.showInputDialog(this, 
                                             "Enter a user name", 
@@ -100,39 +118,40 @@ public class Client extends JFrame implements Runnable
     }
     
     /**
-     * Handle messages via the input stream as we receive them. The first
-     * message is assumed to the be the assigned user ID.
-     */
-    @Override
-    public void run()
-    {
-        while (true) {
-            try {
-                // Read a line from the input stream and increment our line
-                // counter.
-                String line = input.readLine();
-                count++;
-                
-                // Setup our ID on the first message, otherwise display the 
-                // message
-                if (count == 1) {
-                    sendData(this.ID);
-                    displayMessage("Your ID is " + this.ID);
-                } else {
-                    displayMessage(line);
-                }
-            } catch (IOException e) {}
-        }
-    }
-    
-    /**
      * Send a message over the output stream.
      * @param msg the message to send
      */
     private void sendData(String msg)
     {
-        if (msg != null || !msg.equals(""))
-            output.println(this.ID + ": " + msg);
+        try {
+            ChatResponse message = new ChatResponse(ChatResponse.TYPE_MESSAGE,
+                                                    this.username + ": " + msg);
+            output.writeObject(message);
+            output.flush();
+        } catch (IOException e) {
+            printErr("Error sending message to server.");
+        }
+    }
+    
+    /**
+     * Print an error message.
+     * @param err the error message
+     */
+    private void printErr(String err)
+    {
+        System.err.println(err);
+    }
+    
+    /**
+     * Setup our I/O streams via the socket connection. ENSURE YOU GET THE
+     * OUTPUT STREAM FIRST.
+     * @throws IOException the streams could not be created
+     */
+    private void getStreams() throws IOException
+    {
+        output = new ObjectOutputStream(socket.getOutputStream());
+        output.flush();
+        input = new ObjectInputStream(socket.getInputStream());
     }
     
     /**
@@ -145,11 +164,34 @@ public class Client extends JFrame implements Runnable
     }
     
     /**
-     * Start a new client.
-     * @param args command line arguments
+     * Start the client thread.
      */
+    public void runClient()
+    {
+        thread = new Thread(this);
+        thread.start();
+    }
+    
+    /**
+     * Handle messages via the input stream as we receive them.
+     */
+    @Override
+    public void run()
+    {
+        while (true) {
+            try {
+                // Read a message from the input stream.
+                ChatResponse msg = (ChatResponse) input.readObject();
+
+                displayMessage(msg.getMessage());
+            } catch (IOException | ClassNotFoundException e) {
+                printErr("Error reading message from server.");
+            }
+        }
+    }
+    
     public static void main(String[] args)
     {
-        Client app = new Client("localhost");
+        new Client().runClient();
     }
 }
