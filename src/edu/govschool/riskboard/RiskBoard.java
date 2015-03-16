@@ -395,7 +395,6 @@ public class RiskBoard extends Application {    // Our instance variables, or in
         primaryStage.setHeight(530);
         primaryStage.setResizable(false);
         primaryStage.show();
-        System.out.println(world.getCountry("Quebec").name);
         MessageBox.show("Take Turns selecting countries. Each player gets 21.", "Instructions");
     }
 
