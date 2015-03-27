@@ -1,10 +1,14 @@
 package edu.govschool.networking.multi;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -86,11 +90,17 @@ public class Client extends JFrame implements Runnable
         } catch (IOException e) {
             printErr("Error sending username to server.");
         }
-        
         // Finalize the GUI and pass it to a background thread
         setSize(500, 500);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                sendData(new ChatResponse(ChatResponse.TYPE_DISCONNECT, ""));
+            }
+        });
     }
     
     /**
@@ -127,6 +137,16 @@ public class Client extends JFrame implements Runnable
             ChatResponse message = new ChatResponse(ChatResponse.TYPE_MESSAGE,
                                                     this.username + ": " + msg);
             output.writeObject(message);
+            output.flush();
+        } catch (IOException e) {
+            printErr("Error sending message to server.");
+        }
+    }
+    
+    private void sendData(ChatResponse data)
+    {
+        try {
+            output.writeObject(data);
             output.flush();
         } catch (IOException e) {
             printErr("Error sending message to server.");

@@ -12,10 +12,11 @@ import java.io.Serializable;
  */
 public class ChatResponse implements Serializable
 {
-    public static final int TYPE_BAD_USERNAME  = 0x01;
-    public static final int TYPE_GOOD_USERNAME = 0x02;
-    public static final int TYPE_MESSAGE       = 0x03;
-    public static final int TYPE_USERNAME      = 0x04;
+    public static final int TYPE_BAD_USERNAME  = 1;
+    public static final int TYPE_GOOD_USERNAME = 2;
+    public static final int TYPE_MESSAGE       = 3;
+    public static final int TYPE_USERNAME      = 4;
+    public static final int TYPE_DISCONNECT    = 5;
     
     private final int type;
     private final String message;
